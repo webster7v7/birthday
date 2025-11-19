@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7c6d9" />
+    <title>小晴宝宝，生日快乐</title>
+    <link rel="preload" href="assets/cake.svg" as="image" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="loader" aria-hidden="true">
+      <div class="loader-heart">❤</div>
+      <div class="loader-text">Loading...</div>
+    </div>
+    <div id="fx-layer" aria-hidden="true"></div>
+    <nav class="site-nav" role="navigation" aria-label="版本切换">
+      <a href="index.html" aria-current="page">首页</a>
+      <a href="versions/1.0.1.html">1.0.1</a>
+      <a href="versions/1.0.2.html">1.0.2</a>
+      <a href="versions/1.0.3.html">1.0.3</a>
+    </nav>
+
+    <main class="container">
+      <header class="hero" role="banner">
+        <h1 class="title">小晴宝宝，生日快乐</h1>
+        <p class="subtitle"><span id="nickname" aria-live="polite">小晴宝宝</span></p>
+      </header>
+
+      <section class="message">
+        <div class="blessing">
+          <p>我爱你，我会永远陪在你的身边照顾你。</p>
+          <p>谢谢你来到我的世界，让平凡的日子都有了甜味和颜色。</p>
+          <p>也愿你在每一个普通的日子里，都被认真对待、被温柔以待。</p>
+        </div>
+      </section>
+
+      <section class="typing">
+        <div id="typewriter" aria-live="polite"></div>
+        <template id="tw-lines">
+          <p>今天是属于你的温柔时刻，愿你的笑眼像星光一样闪烁。</p>
+          <p>谢谢你来到我的世界，让平凡的日子都有了甜味。</p>
+          <p>我爱你，我会永远陪在你的身边照顾你。</p>
+          <p>愿你被温柔以待，被热爱环绕，每一步都轻盈而坚定。</p>
+          <p>小晴宝宝、妈咪、乖乖，生日快乐，每一天都被认真对待。</p>
+        </template>
+      </section>
+
+      <section class="counter" aria-label="我们认识的时长">
+        <p class="days">我们已经相遇 <strong><span id="days">0</span>天<span id="hours">0</span>小时<span id="mins">0</span>分钟</strong></p>
+        <p class="since">从 2025-02-04 20:05 那一刻开始</p>
+      </section>
+
+      <section class="story" aria-label="我们的故事">
+        <h2 class="section-title">我们的故事</h2>
+        <ul class="story-list">
+          <li class="story-item">
+            <p class="story-item-title">2025-02-04 · 那次相遇</p>
+            <p class="story-item-text">从那天开始，普通的一天突然有了被记住的理由，时间也有了温柔的刻度。</p>
+          </li>
+          <li class="story-item">
+            <p class="story-item-title">那些聊天到很晚的夜里</p>
+            <p class="story-item-text">屏幕一端是你的笑和烦恼，另一端是我一点一点学会怎样陪你、懂你。</p>
+          </li>
+          <li class="story-item">
+            <p class="story-item-title">悄悄许下的心愿</p>
+            <p class="story-item-text">希望以后的日子里，你不只是被世界善待，也被我好好保护和珍惜。</p>
+          </li>
+        </ul>
+      </section>
+
+      <figure class="cake-wrap">
+        <img class="cake" id="cake-img" src="assets/cake.svg" alt="生日蛋糕" />
+      </figure>
+
+      <section class="versions" aria-label="版本预览">
+        <h2 class="section-title">小小彩蛋 · 不同版本的小惊喜</h2>
+        <div class="version-list">
+          <a class="version-card" href="versions/1.0.1.html">
+            <p class="version-card-title">Version 1.0.1 · 绚丽蛋糕舞台</p>
+            <p class="version-card-meta">纯 CSS 生日蛋糕和满屏动画，为你点亮第一份惊喜。</p>
+          </a>
+          <a class="version-card" href="versions/1.0.2.html">
+            <p class="version-card-title">Version 1.0.2 · 细节升级版</p>
+            <p class="version-card-meta">在第一版的基础上，打磨细节和动效，让画面更温柔顺滑。</p>
+          </a>
+          <a class="version-card" href="versions/1.0.3.html">
+            <p class="version-card-title">Version 1.0.3 · 继续更新中</p>
+            <p class="version-card-meta">还有更多想为你做的小东西，都慢慢藏在这些版本里。</p>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <button id="perfToggle" class="perf-toggle" aria-label="切换性能档位" title="切换性能档位">⚙️</button>
+
+    <script defer src="app.js"></script>
+    <noscript>为获得最佳体验，请开启 JavaScript。</noscript>
+  </body>
+  </html>

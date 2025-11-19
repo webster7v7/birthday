@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>生日快乐 - 我的小晴宝宝</title>
+    <style>
+        :root {
+            --color-primary: #6a5acd;
+            --color-accent: #ff69b4;
+            --color-accent-light: #ff9ebb;
+            --gradient-bg: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 25%, #e0f0ff 50%, #f0e0ff 75%, #ffeef8 100%);
+            --gradient-title: linear-gradient(45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+            --gradient-cake-layer: linear-gradient(to bottom, #ffd3e1, #ffb3c8);
+            --gradient-cake-middle: linear-gradient(to bottom, #ffe0f0, #ffb8d8);
+            --gradient-cake-top: linear-gradient(to bottom, #fff0f8, #ffcce6);
+            --shadow-cake: 0 10px 20px rgba(160, 120, 200, 0.3);
+            --shadow-soft: 0 5px 15px rgba(160, 120, 200, 0.2);
+            --shadow-card: 0 8px 32px rgba(160, 120, 200, 0.15);
+            --spacing-xs: 10px;
+            --spacing-sm: 15px;
+            --spacing-md: 20px;
+            --spacing-lg: 30px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+            background: var(--gradient-bg);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            color: var(--color-primary);
+            padding-top: 56px;
+            padding-bottom: 60px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 浮动心优化 */
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #ff6b9d;
+            transform: rotate(45deg);
+            animation: float 10s infinite ease-in-out;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.5));
+            will-change: transform, opacity;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #ff6b9d;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            left: -8px;
+            top: 0;
+        }
+
+        .heart::after {
+            left: 0;
+            top: -8px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(45deg) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: translateY(90vh) rotate(45deg) scale(0.8);
+            }
+            90% {
+                opacity: 0.8;
+                transform: translateY(-10vh) rotate(45deg) scale(1);
+            }
+            100% {
+                transform: translateY(-20vh) rotate(45deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* 主容器优化 */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* 标题优化 */
+        .main-title {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            margin: 20px 0 15px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleShine 3s ease-in-out infinite;
+            text-shadow: 0 5px 15px rgba(160, 120, 200, 0.2);
+            line-height: 1.2;
+        }
+
+        @keyframes titleShine {
+            0%, 100% { 
+                filter: brightness(1) contrast(1); 
+                transform: scale(1);
+            }
+            50% { 
+                filter: brightness(1.1) contrast(1.1); 
+                transform: scale(1.02);
+            }
+        }
+
+        /* 昵称区域优化 */
+        .nicknames {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 0 10px;
+        }
+
+        .nickname {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            color: #7b68ee;
+            font-weight: 600;
+            position: relative;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            min-width: 100px;
+            flex: 0 1 auto;
+            will-change: transform, box-shadow;
+        }
+
+        .nickname:hover {
+            transform: translateY(-8px) scale(1.08) rotate(1deg);
+            box-shadow: 0 12px 40px rgba(160, 120, 200, 0.3);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .nickname:active {
+            transform: translateY(-4px) scale(1.04);
+        }
+
+        .nickname::after {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 1.2rem;
+            animation: sparkle 2s infinite;
+            filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.7));
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* 蛋糕区域优化 */
+        .cake-container {
+            margin: var(--spacing-lg) 0;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 300px;
+            height: 320px;
+        }
+
+        .cake {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            margin: 0 auto;
+            filter: drop-shadow(var(--shadow-cake));
+            transform-origin: bottom center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform, filter;
+        }
+
+        .cake:hover {
+            transform: scale(1.08) rotate(2deg);
+            filter: drop-shadow(0 15px 30px rgba(160, 120, 200, 0.4));
+        }
+
+        .cake-layer {
+            position: absolute;
+            background: var(--gradient-cake-layer);
+            border-radius: 10px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .layer-bottom {
+            width: 100%;
+            height: 100px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to bottom, #ffd3e1, #ff9ebb);
+            border-radius: 15px;
+        }
+
+        .layer-middle {
+            width: 80%;
+            height: 80px;
+            bottom: 90px;
+            left: 10%;
+            background: var(--gradient-cake-middle);
+            border-radius: 12px;
+        }
+
+        .layer-top {
+            width: 60%;
+            height: 60px;
+            bottom: 160px;
+            left: 20%;
+            background: var(--gradient-cake-top);
+            border-radius: 10px;
+        }
+
+        /* 蛋糕装饰 */
+        .cream-decoration {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #fff, #ffe0f0);
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .cream1 { top: 5px; left: 15%; }
+        .cream2 { top: 5px; left: 45%; }
+        .cream3 { top: 5px; right: 15%; }
+        .cream4 { bottom: 10px; left: 20%; }
+        .cream5 { bottom: 10px; right: 20%; }
+
+        .strawberry {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, #ff6b6b, #ff4757);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .strawberry1 { top: 10px; left: 30%; }
+        .strawberry2 { top: 10px; right: 30%; }
+        .strawberry3 { bottom: 15px; left: 40%; }
+
+        .candle {
+            position: absolute;
+            width: 8px;
+            height: 40px;
+            background: linear-gradient(to bottom, #ffd700, #ffa500);
+            bottom: 230px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .flame {
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            background: radial-gradient(circle at 30% 30%, #ffeb3b, #ff9800, #ff5722);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 1s ease-in-out infinite alternate;
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.7), 0 0 30px rgba(255, 152, 0, 0.4);
+            will-change: transform;
+        }
+
+        @keyframes flicker {
+            0% { 
+                transform: translateX(-50%) scale(1) rotate(-3deg); 
+                filter: brightness(1);
+            }
+            100% { 
+                transform: translateX(-50%) scale(1.1) rotate(3deg); 
+                filter: brightness(1.2);
+            }
+        }
+
+        /* 祝福语区域优化 */
+        .blessing-container {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 30px 20px;
+            margin: var(--spacing-lg) auto;
+            max-width: 90%;
+            box-shadow: 0 15px 35px rgba(160, 120, 200, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform, box-shadow;
+        }
+
+        .blessing-container:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(160, 120, 200, 0.3);
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .blessing-text {
+            font-size: clamp(1.1rem, 3.5vw, 1.8rem);
+            color: #6a5acd;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .love-declaration {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: var(--color-accent);
+            font-weight: 700;
+            margin: var(--spacing-md) 0;
+            background: linear-gradient(45deg, var(--color-accent), var(--color-accent-light), #dda0dd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s infinite;
+            text-shadow: 0 3px 10px rgba(255, 105, 180, 0.2);
+            line-height: 1.3;
+            will-change: transform;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 星星效果优化 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            color: #ffd700;
+            animation: twinkle 3s infinite;
+            font-size: 1.2rem;
+            filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.7));
+            will-change: opacity, transform;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* 礼物盒优化 */
+        .gift-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 5px 10px rgba(160, 120, 200, 0.3));
+            z-index: 10;
+            will-change: transform;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.15) rotate(8deg);
+            filter: drop-shadow(0 8px 15px rgba(160, 120, 200, 0.4));
+        }
+
+        .gift-box:active {
+            transform: scale(0.92) rotate(0deg);
+        }
+
+        .gift {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(160, 120, 200, 0.2);
+        }
+
+        .gift::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: linear-gradient(to right, #ffd700, #ffa500);
+            transform: translateY(-50%);
+            border-radius: 8px;
+        }
+
+        .gift::after {
+            content: '🎀';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8rem;
+            filter: drop-shadow(0 2px 5px rgba(160, 120, 200, 0.3));
+        }
+
+        /* 响应式设计优化 */
+        @media (max-width: 768px) {
+            :root {
+                --spacing-lg: 20px;
+                --spacing-md: 15px;
+            }
+
+            .container {
+                padding: 10px;
+                justify-content: flex-start;
+                padding-top: 5vh;
+            }
+            
+            .main-title {
+                margin: 10px 0;
+            }
+            
+            .nicknames {
+                gap: var(--spacing-xs);
+                margin: var(--spacing-sm) 0;
+            }
+            
+            .nickname {
+                padding: 10px 15px;
+                min-width: 80px;
+            }
+            
+            .cake-container {
+                margin: var(--spacing-md) 0;
+                height: 280px;
+            }
+            
+            .blessing-container {
+                padding: 25px 15px;
+                margin: var(--spacing-md) auto;
+            }
+            
+            .blessing-text p {
+                margin: 10px 0;
+            }
+            
+            .gift-box {
+                width: 60px;
+                height: 60px;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .gift::after {
+                font-size: 1.5rem;
+                top: -12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --spacing-lg: 15px;
+                --spacing-md: 10px;
+            }
+
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .cake-container {
+                height: 250px;
+            }
+            
+            .candle {
+                bottom: 200px;
+            }
+            
+            .flame {
+                width: 18px;
+                height: 28px;
+                top: -28px;
+            }
+        }
+
+        /* 弹出消息优化 */
+        .popup-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px);
+            padding: 30px 20px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(160, 120, 200, 0.25);
+            z-index: 1000;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            will-change: transform, opacity;
+        }
+
+        .popup-message.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .popup-message h2 {
+            color: #ff69b4;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff69b4, #dda0dd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .popup-message p {
+            color: #6a5acd;
+            font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .close-popup {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(160, 120, 200, 0.2);
+            width: 80%;
+            max-width: 200px;
+        }
+
+        .close-popup:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(160, 120, 200, 0.3);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(160, 120, 200, 0.3);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 顶部导航栏 */
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            z-index: 30;
+        }
+
+        .site-nav a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 6px 10px;
+            border-radius: 10px;
+            transition: background 160ms ease, color 160ms ease, transform 120ms ease;
+            will-change: background, color;
+        }
+
+        .site-nav a:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--color-accent);
+        }
+
+        .site-nav a:active {
+            transform: scale(0.96);
+        }
+
+        .site-nav a:focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 2px;
+        }
+
+        .site-nav a[aria-current="page"] {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--color-accent);
+            box-shadow: 0 6px 18px rgba(255, 105, 180, 0.18);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="site-nav" role="navigation" aria-label="版本切换">
+        <a href="../index.html">首页</a>
+        <a href="1.0.1.html">1.0.1</a>
+        <a href="1.0.2.html" aria-current="page">1.0.2</a>
+        <a href="1.0.3.html">1.0.3</a>
+    </nav>
+
+    <!-- 浮动心 -->
+    <div class="floating-hearts" id="hearts"></div>
+    
+    <!-- 星星背景 -->
+    <div class="stars" id="stars"></div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <h1 class="main-title">🎉 生日快乐 🎉</h1>
+        
+        <!-- 昵称展示 -->
+        <div class="nicknames">
+            <div class="nickname">小晴宝宝</div>
+            <div class="nickname">妈咪</div>
+            <div class="nickname">乖乖</div>
+        </div>
+
+        <!-- 蛋糕动画 -->
+        <div class="cake-container">
+            <div class="cake">
+                <div class="layer-bottom">
+                    <div class="cream-decoration cream1"></div>
+                    <div class="cream-decoration cream2"></div>
+                    <div class="cream-decoration cream3"></div>
+                    <div class="cream-decoration cream4"></div>
+                    <div class="cream-decoration cream5"></div>
+                    <div class="strawberry strawberry1"></div>
+                    <div class="strawberry strawberry2"></div>
+                    <div class="strawberry strawberry3"></div>
+                </div>
+                <div class="layer-middle">
+                    <div class="cream-decoration cream1"></div>
+                    <div class="cream-decoration cream2"></div>
+                    <div class="cream-decoration cream3"></div>
+                </div>
+                <div class="layer-top">
+                    <div class="cream-decoration cream1"></div>
+                    <div class="cream-decoration cream2"></div>
+                </div>
+                <div class="candle">
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 祝福语 -->
+        <div class="blessing-container">
+            <div class="blessing-text">
+                <p>今天是你的生日，我最亲爱的宝贝</p>
+                <p>在这个特别的日子里，我想对你说：</p>
+                <div class="love-declaration">
+                    💖 我爱你 💖
+                </div>
+                <p>我会永远陪在你的身边照顾你</p>
+                <p>守护你的每一个梦想</p>
+                <p>分享你的每一份快乐</p>
+                <p>陪你度过每一个春夏秋冬</p>
+                <p style="margin-top: 20px; font-size: 1.5rem; color: #ff1493;">
+                    你是我生命中最美好的礼物 🎁
+                </p>
+            </div>
+        </div>
+
+        <!-- 礼物盒 -->
+        <div class="gift-box" id="giftBox">
+            <div class="gift"></div>
+        </div>
+    </div>
+
+    <!-- 弹出祝福 -->
+    <div class="overlay" id="overlay"></div>
+    <div class="popup-message" id="popupMessage">
+        <h2>🎂 生日快乐！🎂</h2>
+        <p>愿你的每一天都充满阳光<br>
+           愿你的每一个愿望都能实现<br>
+           愿我们的爱情永远甜蜜<br>
+           <strong>小晴宝宝，我永远爱你！</strong></p>
+        <button class="close-popup" onclick="closePopup()">❤️ 收到你的爱 ❤️</button>
+    </div>
+
+    <script>
+        // 创建浮动心优化
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            document.getElementById('hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+
+        // 创建星星优化
+        function createStar() {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.innerHTML = '⭐';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            document.getElementById('stars').appendChild(star);
+            
+            setTimeout(() => {
+                star.remove();
+            }, 3000);
+        }
+
+        // 定期创建心和星星
+        setInterval(createHeart, 800);
+        setInterval(createStar, 1500);
+
+        // 礼物点击事件优化
+        document.getElementById('giftBox').addEventListener('click', function() {
+            showPopup();
+            this.style.animation = 'bounce 0.5s ease';
+            setTimeout(() => {
+                this.style.animation = '';
+            }, 500);
+        });
+
+        // 显示弹出祝福
+        function showPopup() {
+            document.getElementById('overlay').classList.add('show');
+            document.getElementById('popupMessage').classList.add('show');
+            
+            // 创建爆炸心效果
+            for(let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.style.position = 'fixed';
+                    heart.style.top = '50%';
+                    heart.style.left = '50%';
+                    heart.style.transform = 'translate(-50%, -50%)';
+                    heart.style.animation = 'explode 1s ease-out forwards';
+                    heart.style.transform += ` rotate(${Math.random() * 360}deg)`;
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 1000);
+                }, i * 50);
+            }
+        }
+
+        // 关闭弹出祝福
+        function closePopup() {
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('popupMessage').classList.remove('show');
+        }
+
+        // 点击昵称效果
+        document.querySelectorAll('.nickname').forEach(nickname => {
+            nickname.addEventListener('click', function() {
+                this.style.transform = 'scale(1.2) rotate(5deg)';
+                this.style.boxShadow = '0 8px 25px rgba(255, 105, 180, 0.4)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                }, 300);
+            });
+        });
+
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            const elements = document.querySelectorAll('.nickname, .cake, .blessing-container');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    el.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+
+        // 鼠标视差效果
+        document.addEventListener('mousemove', function(e) {
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+            
+            const cake = document.querySelector('.cake');
+            if (cake && window.innerWidth > 768) {
+                cake.style.transform = `translate(${mouseX * 10}px, ${mouseY * 10}px) rotate(${mouseX * 5}deg)`;
+            }
+        });
+
+        // 点击特效
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.popup-message') || e.target.closest('.gift-box')) return;
+            
+            const ripple = document.createElement('div');
+            ripple.style.position = 'fixed';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.width = '20px';
+            ripple.style.height = '20px';
+            ripple.style.background = 'rgba(255, 182, 193, 0.6)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.transform = 'translate(-50%, -50%)';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.animation = 'ripple 0.6s ease-out';
+            ripple.style.backdropFilter = 'blur(2px)';
+            
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+
+        // 添加爆炸动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes explode {
+                to {
+                    transform: translate(${Math.random() * 400 - 200}px, ${Math.random() * 400 - 200}px) rotate(45deg) scale(1.5);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes bounce {
+                0%, 100% { transform: translateY(0) rotate(0deg); }
+                25% { transform: translateY(-10px) rotate(5deg); }
+                75% { transform: translateY(-5px) rotate(-5deg); }
+            }
+            
+            @keyframes ripple {
+                to {
+                    width: 100px;
+                    height: 100px;
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 键盘交互
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                showPopup();
+            }
+        });
+
+        // 触摸设备优化
+        if ('ontouchstart' in window) {
+            document.body.style.cursor = 'pointer';
+            document.querySelectorAll('.nickname, .gift-box').forEach(el => {
+                el.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                el.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                });
+            });
+        }
+
+        // 防止页面滚动
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // 完成提示
+        console.log('✨ 页面已优化：CSS变量化、布局改进、交互增强、性能优化完成！');
+    </script>
+</body>
+</html>

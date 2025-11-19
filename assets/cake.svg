@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="生日蛋糕">
+  <defs>
+    <style><![CDATA[
+      .shadow { filter: drop-shadow(0 6px 18px rgba(0,0,0,.12)); }
+      .frost { fill: #ffe3ee; }
+      .layer1 { fill: #f8b6d0; }
+      .layer2 { fill: #ff9ecb; }
+      .topping { fill: #ff6aa2; }
+      .candle { fill: #ffffff; }
+      .stripe { stroke: #ff9ecb; stroke-width: 2; }
+      .flame { fill: #ffd35c; transform-origin: center; animation: flicker 900ms ease-in-out infinite; }
+      .spark { fill: #ffef9a; opacity: .7; }
+      @keyframes flicker { 0%{ transform: scale(1) translateY(0); opacity:.95 } 50%{ transform: scale(1.12) translateY(-1px); opacity:1 } 100%{ transform: scale(.98) translateY(0); opacity:.9 } }
+      @media (prefers-reduced-motion: reduce) { .flame { animation: none; } }
+    ]]></style>
+  </defs>
+
+  <rect width="200" height="200" fill="none" />
+  <g class="shadow" transform="translate(0, 10)">
+    <!-- Base layers -->
+    <rect class="layer1" x="30" y="120" rx="8" ry="8" width="140" height="40" />
+    <rect class="frost"  x="40" y="90"  rx="8" ry="8" width="120" height="40" />
+    <rect class="layer2" x="50" y="70"  rx="6" ry="6" width="100" height="30" />
+    <rect class="topping" x="50" y="66"  width="100" height="10" rx="5" ry="5" />
+
+    <!-- Drips on topping -->
+    <path class="topping" d="M55 76 q6 10 0 18 q-8 -4 -6 -14 z"/>
+    <path class="topping" d="M75 76 q6 12 0 20 q-10 -5 -7 -15 z"/>
+    <path class="topping" d="M105 76 q6 10 0 18 q-8 -4 -6 -14 z"/>
+    <path class="topping" d="M135 76 q6 11 0 19 q-9 -4 -7 -14 z"/>
+
+    <!-- Candles -->
+    <g transform="translate(0, -4)">
+      <g>
+        <rect class="candle" x="70" y="45" width="10" height="26" rx="3" />
+        <line class="stripe" x1="72" y1="49" x2="78" y2="53" />
+        <line class="stripe" x1="72" y1="56" x2="78" y2="60" />
+        <line class="stripe" x1="72" y1="63" x2="78" y2="67" />
+        <ellipse class="flame" cx="75" cy="42" rx="4" ry="6" />
+      </g>
+      <g>
+        <rect class="candle" x="95" y="45" width="10" height="26" rx="3" />
+        <line class="stripe" x1="97" y1="49" x2="103" y2="53" />
+        <line class="stripe" x1="97" y1="56" x2="103" y2="60" />
+        <line class="stripe" x1="97" y1="63" x2="103" y2="67" />
+        <ellipse class="flame" cx="100" cy="42" rx="4" ry="6" />
+      </g>
+      <g>
+        <rect class="candle" x="120" y="45" width="10" height="26" rx="3" />
+        <line class="stripe" x1="122" y1="49" x2="128" y2="53" />
+        <line class="stripe" x1="122" y1="56" x2="128" y2="60" />
+        <line class="stripe" x1="122" y1="63" x2="128" y2="67" />
+        <ellipse class="flame" cx="125" cy="42" rx="4" ry="6" />
+      </g>
+    </g>
+
+    <!-- Sparks -->
+    <circle class="spark" cx="35" cy="40" r="2" />
+    <circle class="spark" cx="160" cy="36" r="2" />
+    <circle class="spark" cx="48" cy="28" r="1.6" />
+    <circle class="spark" cx="175" cy="50" r="1.6" />
+  </g>
+</svg>
