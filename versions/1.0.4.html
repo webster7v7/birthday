@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7c6d9" />
+    <title>小晴妈咪的特权卡包</title>
+    <link rel="preload" href="../assets/cake.svg" as="image" type="image/svg+xml" />
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      /* 页面特定样式 */
+      .coupon-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        width: 100%;
+        max-width: 800px;
+        padding: 10px;
+      }
+
+      /* 3D翻转卡片容器 */
+      .flip-card {
+        background-color: transparent;
+        width: 100%;
+        height: 180px;
+        perspective: 1000px;
+        cursor: pointer;
+      }
+
+      /* 翻转内部容器 */
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        border-radius: 16px;
+        box-shadow: var(--shadow-soft);
+      }
+
+      /* 点击翻转状态 */
+      .flip-card.flipped .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+
+      /* 正反面通用样式 */
+      .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* 正面样式 */
+      .flip-card-front {
+        background: rgba(255, 255, 255, 0.6);
+        color: var(--text-primary);
+        border: 2px solid white;
+      }
+
+      .card-icon {
+        font-size: 42px;
+        margin-bottom: 10px;
+      }
+
+      .card-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+        color: var(--accent);
+      }
+
+      .tap-hint {
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--text-secondary);
+        opacity: 0.7;
+      }
+
+      /* 反面样式 */
+      .flip-card-back {
+        background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+        color: var(--text-primary);
+        transform: rotateY(180deg);
+        border: 2px solid var(--accent);
+      }
+
+      .card-desc {
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .card-validity {
+        margin-top: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        color: var(--text-secondary);
+      }
+      
+      /* 导航调整 */
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 20px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .back-link:hover { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div id="fx-layer" aria-hidden="true"></div>
+    
+    <nav class="site-nav" role="navigation" aria-label="版本切换">
+      <a href="../index.html">首页</a>
+      <a href="1.0.1.html">1.0.1</a>
+      <a href="1.0.2.html">1.0.2</a>
+      <a href="1.0.3.html">1.0.3</a>
+      <a href="1.0.4.html" aria-current="page">1.0.4</a>
+    </nav>
+
+    <main class="container">
+      <header class="hero" role="banner">
+        <h1 class="title">专属特权卡包</h1>
+        <p class="subtitle">献给我的<span id="nickname" style="color: var(--accent); font-weight: bold;">小晴妈咪</span></p>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">点击卡片查看特权详情 ✨</p>
+      </header>
+
+      <div class="coupon-grid">
+        <!-- 卡片 1: 宠爱卡 -->
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="card-icon">🎀</div>
+              <h3 class="card-title">小晴妈咪宠爱卡</h3>
+              <span class="tap-hint">点击翻转</span>
+            </div>
+            <div class="flip-card-back">
+              <p class="card-desc">无论几岁，你永远是我手心里的宝。<br>撒娇、偷懒都是你的特权~</p>
+              <span class="card-validity">有效期：永久有效</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 2: 抱抱卡 -->
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="card-icon">🤗</div>
+              <h3 class="card-title">无限抱抱卡</h3>
+              <span class="tap-hint">点击翻转</span>
+            </div>
+            <div class="flip-card-back">
+              <p class="card-desc">凭此卡兑换 3 分钟以上的紧紧拥抱。<br>包含摸头杀和拍背服务。</p>
+              <span class="card-validity">库存：无限量供应</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 3: 心愿卡 -->
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="card-icon">✨</div>
+              <h3 class="card-title">乖乖心愿兑换券</h3>
+              <span class="tap-hint">点击翻转</span>
+            </div>
+            <div class="flip-card-back">
+              <p class="card-desc">只要是你想要的，我都努力去实现。<br>小礼物、奶茶、或者...</p>
+              <span class="card-validity">使用条件：做乖乖的时候</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 4: 约会卡 -->
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="card-icon">🌹</div>
+              <h3 class="card-title">浪漫幸福约会卡</h3>
+              <span class="tap-hint">点击翻转</span>
+            </div>
+            <div class="flip-card-back">
+              <p class="card-desc">兑换一次精心策划的惊喜约会。<br>时间地点你来定！</p>
+              <span class="card-validity">备注：需提前预约哦</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="message">
+        <div class="blessing">
+          <p>所有的浪漫与幸福，都只想给你。</p>
+          <p>生日快乐，我的挚爱。</p>
+        </div>
+      </section>
+
+    </main>
+
+    <script>
+      // 简单的爱心漂浮效果 (复用一部分 index.html 的逻辑简化版)
+      function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerText = ['❤', '💖', '✨', '🥰'][Math.floor(Math.random() * 4)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+        heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+        
+        // 随机颜色
+        const colors = ['#ff6aa2', '#ff9ecb', '#ffb7d8', '#ff4d88'];
+        heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+        
+        heart.style.position = 'fixed';
+        heart.style.bottom = '-20px';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '0';
+        
+        // 简单的上浮动画
+        heart.animate([
+          { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+          { transform: `translateY(-100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+        ], {
+          duration: 4000 + Math.random() * 3000,
+          easing: 'ease-out'
+        }).onfinish = () => heart.remove();
+
+        document.body.appendChild(heart);
+      }
+
+      // 定时生成爱心
+      setInterval(createHeart, 800);
+    </script>
+  </body>
+</html>
